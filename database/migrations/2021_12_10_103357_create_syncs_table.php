@@ -14,14 +14,11 @@ class CreateSyncsTable extends Migration
     public function up()
     {
         Schema::create('syncs', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->bigInteger('atteche_id')->unsigned();
+            $table->bigIncrements('id');        
             $table->string('name');
             $table->string('email');
             $table->string('password');
-            $table->timestamps();          
-            $table->foreign('atteche_id')->references('id')->on('atteches')
-            ->onDelete('cascade')->onUpdate('cascade');
+            $table->timestamps();         
         });
     }
 

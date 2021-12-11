@@ -13,7 +13,7 @@ class UpdateAttechRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,10 @@ class UpdateAttechRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'sync_id'=>'required',
+            'name'=>'required',
+            'email'=>'required',
+            'password'=>'required'
         ];
     }
 }

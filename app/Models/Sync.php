@@ -8,8 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Sync extends Model
 {
     use HasFactory;
-    protected $table = 'syncs';
-    protected $fillable = ['atteche_id','name','email','password'];
-    public $timestamps = false;
+  
+    protected $fillable = ['name','email','password'];
+    public $timestamps = true;
 
+    public function sync()
+    {
+        return $this->hasOne(Attech::class);
+    }
+    
 }

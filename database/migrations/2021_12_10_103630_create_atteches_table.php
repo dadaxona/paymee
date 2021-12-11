@@ -14,11 +14,14 @@ class CreateAttechesTable extends Migration
     public function up()
     {
         Schema::create('atteches', function (Blueprint $table) {
-            $table->bigIncrements('id');          
+            $table->bigIncrements('id');
+            $table->bigInteger('sync_id')->unsigned();
             $table->string('name');
             $table->string('email');
             $table->string('password');
             $table->timestamps();
+            $table->foreign('sync_id')->references('id')->on('syncs')
+            ->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

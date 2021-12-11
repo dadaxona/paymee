@@ -2,24 +2,32 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Sync;
+
 use App\Http\Requests\StoreSyncRequest;
 use App\Http\Requests\UpdateSyncRequest;
+use App\Providers\SyncProvider;
 
 class SyncController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    private $config;
+    public function __construct(protected SyncProvider $post){
+        $this->config = [
+            'list' => [
+                'columns' => ['id','name','email','password'],
+                'relations' => [ 'sync']
+            ]
+        ];
+    }
+
+    public function index(SyncProvider $work)
     {
-        //
+        $client = $this->post->getList($this->config['list']);
+        // return response()->json($client);
+        return view('sync',["for"=>$work->get()]);
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new re.
      *
      * @return \Illuminate\Http\Response
      */
@@ -34,9 +42,10 @@ class SyncController extends Controller
      * @param  \App\Http\Requests\StoreSyncRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreSyncRequest $request)
+    public function store(StoreSyncRequest $request, SyncProvider $work)
     {
-        //
+        return redirect()->route('sync.index',$work->create($request->validated()));    
+
     }
 
     /**
@@ -45,9 +54,9 @@ class SyncController extends Controller
      * @param  \App\Models\Sync  $sync
      * @return \Illuminate\Http\Response
      */
-    public function show(Sync $sync)
+    public function show($id,SyncProvider $work)
     {
-        //
+        return redirect()->route('sync.index',$work->show($id));  
     }
 
     /**
@@ -56,9 +65,9 @@ class SyncController extends Controller
      * @param  \App\Models\Sync  $sync
      * @return \Illuminate\Http\Response
      */
-    public function edit(Sync $sync)
+    public function edit($id, SyncProvider $work)
     {
-        //
+        return redirect()->route('sync.index',$work->edit($id));  
     }
 
     /**
@@ -68,9 +77,10 @@ class SyncController extends Controller
      * @param  \App\Models\Sync  $sync
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateSyncRequest $request, Sync $sync)
+    public function update(UpdateSyncRequest $request, SyncProvider $work)
     {
-        //
+        return redirect()->route('sync.index',$work->create($request->validated()));    
+        
     }
 
     /**
@@ -79,8 +89,9 @@ class SyncController extends Controller
      * @param  \App\Models\Sync  $sync
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Sync $sync)
+    public function destroy($id, SyncProvider $work)
     {
-        //
+        return redirect()->route('sync.index',$work->delete($id));    
+        
     }
 }
